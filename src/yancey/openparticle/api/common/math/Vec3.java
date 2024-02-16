@@ -25,14 +25,14 @@ public class Vec3 {
         z = dataInputStream.readFloat();
     }
 
+    public static Vec3 ofInt(int x, int y, int z) {
+        return new Vec3(x + 0.5F, y + 0.5F, z + 0.5F);
+    }
+
     public void writeToFile(DataOutputStream dataOutputStream) throws IOException {
         dataOutputStream.writeFloat(x);
         dataOutputStream.writeFloat(y);
         dataOutputStream.writeFloat(z);
-    }
-
-    public static Vec3 ofInt(int x, int y, int z) {
-        return new Vec3(x + 0.5F, y + 0.5F, z + 0.5F);
     }
 
     public Vec3 add(float dx, float dy, float dz) {
@@ -71,10 +71,6 @@ public class Vec3 {
         return remove(vec3).distanceToZero();
     }
 
-    public Vec3 copy() {
-        return new Vec3(x, y, z);
-    }
-
     public Vec3 getRadian() {
         return new Vec3((float) 0, (float) Math.atan2(z, MathUtil.distance(x, y)), (float) Math.atan2(y, x));
     }
@@ -83,7 +79,7 @@ public class Vec3 {
         return new Vec3((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z));
     }
 
-    public boolean isZero(){
+    public boolean isZero() {
         return x == 0 && y == 0 && z == 0;
     }
 
@@ -92,7 +88,7 @@ public class Vec3 {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vec3 vec3 = (Vec3) o;
-        return Double.compare(x, vec3.x) == 0 && Double.compare(y, vec3.y) == 0 && Double.compare(z, vec3.z) == 0;
+        return Float.compare(x, vec3.x) == 0 && Float.compare(y, vec3.y) == 0 && Float.compare(z, vec3.z) == 0;
     }
 
     @Override

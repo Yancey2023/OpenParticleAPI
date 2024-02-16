@@ -37,6 +37,6 @@ public class ParticleType {
     }
 
     public Particle createParticle(int age) {
-        return new ParticleDefault(this, age).useCache();
+        return new ParticleDefault(this, age).useCache(true);
     }
 }

@@ -4,7 +4,7 @@ package yancey.openparticle.api.function;
  * easeIn     &#09;  缓入                                              <br>
  * easeOut    &#09;  缓出                                              <br>
  * easeInOut  &#09;  缓入缓出                                            <br>
- * <p> 
+ * <p>
  * Linear     &#09;  无缓动效果                                           <br>
  * Quad       &#09;  二次方的缓动            &#09;     t^2                 <br>
  * Sine       &#09;  正弦曲线的缓动           &#09;     sin(t)              <br>
@@ -163,7 +163,7 @@ public interface EasingFunction {
     static double easeInElastic(double time, double begin, double change, double duration) {
         if (time == 0) {
             return begin;
-        }else if ((time /= duration) == 1) {
+        } else if ((time /= duration) == 1) {
             return begin + change;
         }
         double p = duration * 0.3;
@@ -174,7 +174,7 @@ public interface EasingFunction {
     static double easeOutElastic(double time, double begin, double change, double duration) {
         if (time == 0) {
             return begin;
-        }else if ((time /= duration) == 1) {
+        } else if ((time /= duration) == 1) {
             return begin + change;
         }
         double p = duration * 0.3;
@@ -185,7 +185,7 @@ public interface EasingFunction {
     static double easeInOutElastic(double time, double begin, double change, double duration) {
         if (time == 0) {
             return begin;
-        }else if ((time /= duration / 2) == 2) {
+        } else if ((time /= duration / 2) == 2) {
             return begin + change;
         }
         double p = duration * 0.45;

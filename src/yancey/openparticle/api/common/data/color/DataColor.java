@@ -1,6 +1,5 @@
 package yancey.openparticle.api.common.data.color;
 
-import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,12 +9,6 @@ public abstract class DataColor {
     public static final int STATIC = 0;
     public static final int SIMPLE = 1;
     public static final int FREE = 2;
-
-    protected abstract byte getType();
-
-    public void writeToFile(DataOutputStream dataOutputStream) throws IOException {
-        dataOutputStream.writeByte(getType());
-    }
 
     public static DataColor readFromFile(DataInputStream dataInputStream) throws IOException {
         byte type = dataInputStream.readByte();
@@ -27,5 +20,15 @@ public abstract class DataColor {
         };
     }
 
+    protected abstract byte getType();
+
+    public void writeToFile(DataOutputStream dataOutputStream) throws IOException {
+        dataOutputStream.writeByte(getType());
+    }
+
     public abstract int getColor(int tick, int age);
+
+    public Integer getCurrentStaticColor() {
+        return null;
+    }
 }

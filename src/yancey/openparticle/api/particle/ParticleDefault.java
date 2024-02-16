@@ -1,13 +1,10 @@
 package yancey.openparticle.api.particle;
 
-import yancey.openparticle.api.common.data.color.DataColor;
 import yancey.openparticle.api.common.data.particle.DataParticle;
 import yancey.openparticle.api.common.data.particle.DataParticleSingle;
 import yancey.openparticle.api.type.ParticleType;
 import yancey.openparticle.api.util.version.Version;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.function.IntSupplier;
 
 public class ParticleDefault extends Particle {
@@ -22,10 +19,6 @@ public class ParticleDefault extends Particle {
 
     public ParticleDefault(ParticleType particleType, int age) {
         this(particleType, () -> age);
-    }
-
-    protected List<Particle> getChildren() {
-        return null;
     }
 
     @Override

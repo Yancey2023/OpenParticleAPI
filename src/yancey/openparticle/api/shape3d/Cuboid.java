@@ -74,7 +74,8 @@ public class Cuboid {
             if (interval == -1) {
                 switch (type) {
                     case BORDER -> interval = (length + width + height) * 4 / count;
-                    case HOLLOW -> interval = (float) Math.cbrt((length * width + width * height + length * height) * 2 / count);
+                    case HOLLOW ->
+                            interval = (float) Math.cbrt((length * width + width * height + length * height) * 2 / count);
                     case SOLID -> interval = (float) Math.cbrt(length * width * height / count);
                 }
             }
@@ -85,14 +86,14 @@ public class Cuboid {
         switch (type) {
             case VERTICES -> {
                 return particle -> List.of(
-                        particle.offsetStatic(-halfX, -halfY, -halfZ),
-                        particle.offsetStatic(-halfX, -halfY, halfZ),
-                        particle.offsetStatic(halfX, -halfY, -halfZ),
-                        particle.offsetStatic(-halfX, halfY, -halfZ),
-                        particle.offsetStatic(halfX, halfY, -halfZ),
-                        particle.offsetStatic(-halfX, halfY, halfZ),
-                        particle.offsetStatic(halfX, -halfY, halfZ),
-                        particle.offsetStatic(halfX, halfY, halfZ)
+                        particle.offset(-halfX, -halfY, -halfZ),
+                        particle.offset(-halfX, -halfY, halfZ),
+                        particle.offset(halfX, -halfY, -halfZ),
+                        particle.offset(-halfX, halfY, -halfZ),
+                        particle.offset(halfX, halfY, -halfZ),
+                        particle.offset(-halfX, halfY, halfZ),
+                        particle.offset(halfX, -halfY, halfZ),
+                        particle.offset(halfX, halfY, halfZ)
                 );
             }
             case BORDER, HOLLOW, SOLID -> {
@@ -101,30 +102,30 @@ public class Cuboid {
                 List<Float> numsZ = Shape2dUtil.line(-halfZ, halfZ, height / interval + 1);
                 if (type == Type.BORDER) {
                     return particle -> Stream.of(
-                            numsX.stream().map(x -> particle.offsetStatic(x, -halfY, -halfZ)),
-                            numsX.stream().map(x -> particle.offsetStatic(x, halfY, -halfZ)),
-                            numsX.stream().map(x -> particle.offsetStatic(x, -halfY, halfZ)),
-                            numsX.stream().map(x -> particle.offsetStatic(x, halfY, halfZ)),
-                            numsY.stream().map(y -> particle.offsetStatic(-halfX, y, -halfZ)),
-                            numsY.stream().map(y -> particle.offsetStatic(halfX, y, -halfZ)),
-                            numsY.stream().map(y -> particle.offsetStatic(-halfX, y, halfZ)),
-                            numsY.stream().map(y -> particle.offsetStatic(halfX, y, halfZ)),
-                            numsZ.stream().map(z -> particle.offsetStatic(-halfX, -halfY, z)),
-                            numsZ.stream().map(z -> particle.offsetStatic(halfX, -halfY, z)),
-                            numsZ.stream().map(z -> particle.offsetStatic(-halfX, halfY, z)),
-                            numsZ.stream().map(z -> particle.offsetStatic(halfX, halfY, z))
+                            numsX.stream().map(x -> particle.offset(x, -halfY, -halfZ)),
+                            numsX.stream().map(x -> particle.offset(x, halfY, -halfZ)),
+                            numsX.stream().map(x -> particle.offset(x, -halfY, halfZ)),
+                            numsX.stream().map(x -> particle.offset(x, halfY, halfZ)),
+                            numsY.stream().map(y -> particle.offset(-halfX, y, -halfZ)),
+                            numsY.stream().map(y -> particle.offset(halfX, y, -halfZ)),
+                            numsY.stream().map(y -> particle.offset(-halfX, y, halfZ)),
+                            numsY.stream().map(y -> particle.offset(halfX, y, halfZ)),
+                            numsZ.stream().map(z -> particle.offset(-halfX, -halfY, z)),
+                            numsZ.stream().map(z -> particle.offset(halfX, -halfY, z)),
+                            numsZ.stream().map(z -> particle.offset(-halfX, halfY, z)),
+                            numsZ.stream().map(z -> particle.offset(halfX, halfY, z))
                     ).flatMap(stream -> stream).toList();
                 } else if (type == Type.HOLLOW) {
                     return particle -> Stream.of(
-                            numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offsetStatic(x, y, -halfZ))),
-                            numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offsetStatic(x, y, halfZ))),
-                            numsX.stream().flatMap(x -> numsZ.stream().map(z -> particle.offsetStatic(x, -halfY, z))),
-                            numsX.stream().flatMap(x -> numsZ.stream().map(z -> particle.offsetStatic(x, halfY, z))),
-                            numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offsetStatic(-halfX, y, z))),
-                            numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offsetStatic(halfX, y, z)))
+                            numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offset(x, y, -halfZ))),
+                            numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offset(x, y, halfZ))),
+                            numsX.stream().flatMap(x -> numsZ.stream().map(z -> particle.offset(x, -halfY, z))),
+                            numsX.stream().flatMap(x -> numsZ.stream().map(z -> particle.offset(x, halfY, z))),
+                            numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offset(-halfX, y, z))),
+                            numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offset(halfX, y, z)))
                     ).flatMap(stream -> stream).toList();
                 } else {
-                    return particle -> numsX.stream().flatMap(x -> numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offsetStatic(x, y, z)))).toList();
+                    return particle -> numsX.stream().flatMap(x -> numsY.stream().flatMap(y -> numsZ.stream().map(z -> particle.offset(x, y, z)))).toList();
                 }
             }
             default -> throw new RuntimeException("未知的类型 -> " + type);

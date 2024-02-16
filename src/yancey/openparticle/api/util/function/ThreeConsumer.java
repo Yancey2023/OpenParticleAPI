@@ -1,7 +1,6 @@
 package yancey.openparticle.api.util.function;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 @FunctionalInterface
 public interface ThreeConsumer<A, B, C> {

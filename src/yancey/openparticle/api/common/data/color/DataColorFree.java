@@ -1,6 +1,5 @@
 package yancey.openparticle.api.common.data.color;
 
-import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

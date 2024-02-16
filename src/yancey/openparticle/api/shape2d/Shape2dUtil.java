@@ -2,7 +2,6 @@ package yancey.openparticle.api.shape2d;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class Shape2dUtil {
 

@@ -66,10 +66,10 @@ public abstract class Activity {
         long timeStart1 = System.currentTimeMillis();
         createParticle();
         if (particleList.isEmpty()) {
-            openParticleAPI.logger.warn("粒子为空，你是不是忘记调用addParticle()");
+            openParticleAPI.logger().warn("粒子为空，你是不是忘记调用addParticle()");
             return;
         }
-        Particle particle = Particle.compound(particleList).offsetStatic(getPosition());
+        Particle particle = Particle.compound(particleList).offset(getPosition());
         long timeEnd1 = System.currentTimeMillis();
         System.out.printf("阶段1: 运行耗时%dms\n\n", timeEnd1 - timeStart1);
 
@@ -77,7 +77,7 @@ public abstract class Activity {
         long timeStart2 = System.currentTimeMillis();
         IdentifierCache.identifierList.clear();
         DataParticleManager dataParticleManager = new DataParticleManager();
-        dataParticleManager.add(particle.execute0(getVersion()));
+        dataParticleManager.add(particle.runWithCache(getVersion()));
         long timeEnd2 = System.currentTimeMillis();
         System.out.printf("阶段2: 运行耗时%dms\n", timeEnd2 - timeStart2);
         long count = dataParticleManager.getParticleCount();
@@ -96,7 +96,12 @@ public abstract class Activity {
         if (isRun) {
             System.out.println("开始阶段4: 读取粒子数据");
             timeStart4 = System.currentTimeMillis();
-            DataParticleManager input = openParticleAPI.input(file);
+            DataParticleManager input;
+            try {
+                input = openParticleAPI.input(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             timeEnd4 = System.currentTimeMillis();
             System.out.printf("阶段4: 运行耗时%dms\n\n", timeEnd4 - timeStart4);
 
@@ -110,7 +115,8 @@ public abstract class Activity {
                                     List<ParticleState> particleStateList = new ArrayList<>();
                                     int age = controller.getAge();
                                     for (int i = 0; i < age; i++) {
-                                        particleStateList.add(controller.getParticleState(i));
+                                        controller.prepare(i);
+                                        particleStateList.add(controller.getParticleState());
                                     }
                                     List<String> stringList2 = new ArrayList<>();
                                     for (ParticleState particleState : particleStateList) {
@@ -131,16 +137,16 @@ public abstract class Activity {
                     throw new RuntimeException(e);
                 }
             } else {
-                ExecutorService executorService = Executors.newFixedThreadPool(16);
+                ExecutorService executorService = Executors.newFixedThreadPool(64);
                 List<CompletableFuture<Void>> futureList = new ArrayList<>();
                 for (DataRunningPerTick dataRunningPerTick : dataRunningList) {
                     for (SimpleParticleController controller : dataRunningPerTick.controllerList) {
                         futureList.add(CompletableFuture.runAsync(() -> {
                             int age = controller.getAge();
                             for (int i = 0; i < age; i++) {
-                                controller.getParticleState(i);
+                                controller.prepare(i);
                             }
-                        }));
+                        }, executorService));
                     }
                 }
                 for (CompletableFuture<Void> future : futureList) {

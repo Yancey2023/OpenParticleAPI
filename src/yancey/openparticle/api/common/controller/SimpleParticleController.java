@@ -2,7 +2,6 @@ package yancey.openparticle.api.common.controller;
 
 import yancey.openparticle.api.common.OpenParticleAPI;
 import yancey.openparticle.api.common.data.ParticleState;
-import yancey.openparticle.api.common.data.particle.DataParticleSingle;
 import yancey.openparticle.api.common.math.Vec3;
 import yancey.openparticle.api.common.node.Node;
 import yancey.openparticle.api.common.util.ColorUtil;
@@ -12,29 +11,57 @@ public class SimpleParticleController implements ParticleController {
     private final int tickStart;
     private final Node node;
     private final int age;
-    private int particleTypeRawId = -1;
+    private Object particleSprites;
+    private int lastTick = -1;
+    private ParticleState nextParticleState;
+    private final boolean isStatic;
 
     public SimpleParticleController(Node node) {
         this.node = node;
         this.tickStart = node.getTickStart();
         this.age = node.getAge();
+        isStatic = node.isStatic();
+        if (isStatic) {
+            updateParticleState();
+        }
     }
 
     @Override
-    public ParticleState getParticleState(int tick) {
-        node.clearCache();
-        ParticleState particleState = new ParticleState();
-        Vec3 position = node.getCachePositionMatrix(tick).apply(Vec3.ZERO);
-        particleState.x = position.x;
-        particleState.y = position.y;
-        particleState.z = position.z;
-        int color = node.getCacheColor(tick);
-        particleState.r = (byte) ColorUtil.getRed(color);
-        particleState.g = (byte) ColorUtil.getGreen(color);
-        particleState.b = (byte) ColorUtil.getBlue(color);
-        particleState.a = (byte) ColorUtil.getAlpha(color);
-        particleState.bright = 15728880;
-        return particleState;
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    @Override
+    public void prepare(int tick) {
+        if (isStatic) {
+            return;
+        }
+        if (lastTick != tick) {
+            if (tick >= age) {
+                return;
+            }
+            node.cache(tick);
+            updateParticleState();
+            lastTick = tick;
+        }
+    }
+
+    private void updateParticleState() {
+        nextParticleState = new ParticleState();
+        Vec3 position = node.cachePosition.apply(Vec3.ZERO);
+        nextParticleState.x = position.x;
+        nextParticleState.y = position.y;
+        nextParticleState.z = position.z;
+        nextParticleState.r = (byte) ColorUtil.getRed(node.cacheColor);
+        nextParticleState.g = (byte) ColorUtil.getGreen(node.cacheColor);
+        nextParticleState.b = (byte) ColorUtil.getBlue(node.cacheColor);
+        nextParticleState.a = (byte) ColorUtil.getAlpha(node.cacheColor);
+        nextParticleState.bright = 15728880;
+    }
+
+    @Override
+    public ParticleState getParticleState() {
+        return nextParticleState;
     }
 
     @Override
@@ -48,10 +75,11 @@ public class SimpleParticleController implements ParticleController {
     }
 
     @Override
-    public int getParticleTypeRawId(OpenParticleAPI openParticleAPI) {
-        if (particleTypeRawId == -1) {
-            particleTypeRawId = ((DataParticleSingle) node.dataParticle).identifier.getRawId(openParticleAPI);
+    public Object getParticleSprites(OpenParticleAPI openParticleAPI) {
+        if (particleSprites == null) {
+            particleSprites = node.getParticleSprites(openParticleAPI);
         }
-        return particleTypeRawId;
+        return particleSprites;
     }
+
 }

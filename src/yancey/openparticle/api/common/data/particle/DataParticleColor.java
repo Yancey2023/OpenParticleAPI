@@ -3,7 +3,6 @@ package yancey.openparticle.api.common.data.particle;
 import yancey.openparticle.api.common.data.DataParticleManager;
 import yancey.openparticle.api.common.data.color.DataColor;
 
-import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -46,5 +45,10 @@ public class DataParticleColor extends DataParticle {
     @Override
     public Integer getColor(int tick, int age) {
         return color.getColor(tick, age);
+    }
+
+    @Override
+    public Integer getCurrentStaticColor() {
+        return color.getCurrentStaticColor();
     }
 }

@@ -38,7 +38,7 @@ public class Matrix {
         return scale(scale, scale, scale);
     }
 
-    public static Matrix rotateX(double radian) {
+    public static Matrix rotateX(float radian) {
         float sin = (float) Math.sin(radian);
         float cos = (float) Math.cos(radian);
         return new Matrix(
@@ -49,7 +49,7 @@ public class Matrix {
         );
     }
 
-    public static Matrix rotateY(double radian) {
+    public static Matrix rotateY(float radian) {
         float sin = (float) Math.sin(radian);
         float cos = (float) Math.cos(radian);
         return new Matrix(
@@ -60,7 +60,7 @@ public class Matrix {
         );
     }
 
-    public static Matrix rotateZ(double radian) {
+    public static Matrix rotateZ(float radian) {
         float sin = (float) Math.sin(radian);
         float cos = (float) Math.cos(radian);
         return new Matrix(
@@ -71,16 +71,22 @@ public class Matrix {
         );
     }
 
-    public static Matrix rotateXYZ(double x, double y, double z) {
-        return multiplyAll(rotateX(x), rotateY(y), rotateZ(z));
+    public static Matrix rotateXYZ(float x, float y, float z) {
+        Matrix matrix = Matrix.ZERO;
+        if (z != 0) {
+            matrix = matrix.multiply(rotateZ(z));
+        }
+        if (y != 0) {
+            matrix = matrix.multiply(rotateY(y));
+        }
+        if (x != 0) {
+            matrix = matrix.multiply(rotateX(x));
+        }
+        return matrix;
     }
 
     public static Matrix rotateXYZ(Vec3 radius) {
         return rotateXYZ(radius.x, radius.y, radius.z);
-    }
-
-    public Matrix multiply(Matrix matrix) {
-        return multiply(matrix, this);
     }
 
     /**
@@ -93,20 +99,41 @@ public class Matrix {
         } else if (matrix2 == Matrix.ZERO) {
             return matrix1;
         }
-        float[] data = new float[16];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                for (int k = 0; k < 4; k++) {
-                    data[4 * i + j] += matrix1.data[4 * i + k] * matrix2.data[4 * k + j];
-                }
-            }
-        }
-        return new Matrix(data);
+        return new Matrix(
+                matrix1.data[0] * matrix2.data[0] + matrix1.data[1] * matrix2.data[4] + matrix1.data[2] * matrix2.data[8] + matrix1.data[3] * matrix2.data[12],
+                matrix1.data[0] * matrix2.data[1] + matrix1.data[1] * matrix2.data[5] + matrix1.data[2] * matrix2.data[9] + matrix1.data[3] * matrix2.data[13],
+                matrix1.data[0] * matrix2.data[2] + matrix1.data[1] * matrix2.data[6] + matrix1.data[2] * matrix2.data[10] + matrix1.data[3] * matrix2.data[14],
+                matrix1.data[0] * matrix2.data[3] + matrix1.data[1] * matrix2.data[7] + matrix1.data[2] * matrix2.data[11] + matrix1.data[3] * matrix2.data[15],
+
+                matrix1.data[4] * matrix2.data[0] + matrix1.data[5] * matrix2.data[4] + matrix1.data[6] * matrix2.data[8] + matrix1.data[7] * matrix2.data[12],
+                matrix1.data[4] * matrix2.data[1] + matrix1.data[5] * matrix2.data[5] + matrix1.data[6] * matrix2.data[9] + matrix1.data[7] * matrix2.data[13],
+                matrix1.data[4] * matrix2.data[2] + matrix1.data[5] * matrix2.data[6] + matrix1.data[6] * matrix2.data[10] + matrix1.data[7] * matrix2.data[14],
+                matrix1.data[4] * matrix2.data[3] + matrix1.data[5] * matrix2.data[7] + matrix1.data[6] * matrix2.data[11] + matrix1.data[7] * matrix2.data[15],
+
+                matrix1.data[8] * matrix2.data[0] + matrix1.data[9] * matrix2.data[4] + matrix1.data[10] * matrix2.data[8] + matrix1.data[11] * matrix2.data[12],
+                matrix1.data[8] * matrix2.data[1] + matrix1.data[9] * matrix2.data[5] + matrix1.data[10] * matrix2.data[9] + matrix1.data[11] * matrix2.data[13],
+                matrix1.data[8] * matrix2.data[2] + matrix1.data[9] * matrix2.data[6] + matrix1.data[10] * matrix2.data[10] + matrix1.data[11] * matrix2.data[14],
+                matrix1.data[8] * matrix2.data[3] + matrix1.data[9] * matrix2.data[7] + matrix1.data[10] * matrix2.data[11] + matrix1.data[11] * matrix2.data[15],
+
+                matrix1.data[12] * matrix2.data[0] + matrix1.data[13] * matrix2.data[4] + matrix1.data[14] * matrix2.data[8] + matrix1.data[15] * matrix2.data[12],
+                matrix1.data[12] * matrix2.data[1] + matrix1.data[13] * matrix2.data[5] + matrix1.data[14] * matrix2.data[9] + matrix1.data[15] * matrix2.data[13],
+                matrix1.data[12] * matrix2.data[2] + matrix1.data[13] * matrix2.data[6] + matrix1.data[14] * matrix2.data[10] + matrix1.data[15] * matrix2.data[14],
+                matrix1.data[12] * matrix2.data[3] + matrix1.data[13] * matrix2.data[7] + matrix1.data[14] * matrix2.data[11] + matrix1.data[15] * matrix2.data[15]
+        );
+//        float[] data = new float[16];
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 4; j++) {
+//                for (int k = 0; k < 4; k++) {
+//                    data[4 * i + j] += matrix1.data[4 * i + k] * matrix2.data[4 * k + j];
+//                }
+//            }
+//        }
+//        return new Matrix(data);
     }
 
     public static Matrix multiplyAll(Matrix... matrices) {
         if (matrices == null || matrices.length == 0) {
-            throw new RuntimeException("矩阵相乘至少要有一个矩阵");
+            return Matrix.ZERO;
         }
         Matrix matrix = matrices[0];
         if (matrices.length == 1) {
@@ -116,6 +143,10 @@ public class Matrix {
             matrix = matrix.multiply(matrices[i]);
         }
         return matrix;
+    }
+
+    public Matrix multiply(Matrix matrix) {
+        return multiply(matrix, this);
     }
 
     /**

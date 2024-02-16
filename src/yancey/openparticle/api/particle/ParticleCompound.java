@@ -14,14 +14,10 @@ public class ParticleCompound extends Particle {
         this.children = children;
     }
 
-    protected List<Particle> getChildren() {
-        return children;
-    }
-
     @Override
     protected DataParticle run(Version version) {
         return new DataParticleCompound(false, children.stream()
-                .map(particle -> particle.execute0(version))
+                .map(particle -> particle.runWithCache(version))
                 .toArray(DataParticle[]::new));
     }
 }

@@ -77,23 +77,23 @@ public class Rectangle {
         switch (type) {
             case VERTICES -> {
                 return particle -> List.of(
-                        particle.offsetStatic(-halfX, 0, -halfY),
-                        particle.offsetStatic(-halfX, 0, -halfY),
-                        particle.offsetStatic(halfX, 0, -halfY),
-                        particle.offsetStatic(-halfX, 0, halfY)
+                        particle.offset(-halfX, 0, -halfY),
+                        particle.offset(-halfX, 0, -halfY),
+                        particle.offset(halfX, 0, -halfY),
+                        particle.offset(-halfX, 0, halfY)
                 );
             }
             case BORDER, HOLLOW, SOLID -> {
                 List<Float> numsX = Shape2dUtil.line(-halfX, halfX, length / interval + 1);
                 List<Float> numsY = Shape2dUtil.line(-halfY, halfY, width / interval + 1);
                 if (type == Type.SOLID) {
-                    return particle -> numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offsetStatic(x, 0, y))).toList();
+                    return particle -> numsX.stream().flatMap(x -> numsY.stream().map(y -> particle.offset(x, 0, y))).toList();
                 } else {
                     return particle -> Stream.of(
-                            numsX.stream().map(x -> particle.offsetStatic(x, 0, -halfY)),
-                            numsX.stream().map(x -> particle.offsetStatic(x, 0, halfY)),
-                            numsY.stream().map(y -> particle.offsetStatic(-halfX, 0, y)),
-                            numsY.stream().map(y -> particle.offsetStatic(halfX, 0, y))
+                            numsX.stream().map(x -> particle.offset(x, 0, -halfY)),
+                            numsX.stream().map(x -> particle.offset(x, 0, halfY)),
+                            numsY.stream().map(y -> particle.offset(-halfX, 0, y)),
+                            numsY.stream().map(y -> particle.offset(halfX, 0, y))
                     ).flatMap(stream -> stream).toList();
                 }
             }

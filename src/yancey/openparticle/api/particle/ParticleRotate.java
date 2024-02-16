@@ -5,8 +5,6 @@ import yancey.openparticle.api.common.data.particle.DataParticleRotate;
 import yancey.openparticle.api.common.data.vec3.DataVec3;
 import yancey.openparticle.api.util.version.Version;
 
-import java.util.List;
-
 public class ParticleRotate extends Particle {
 
     private final Particle particle;
@@ -17,12 +15,8 @@ public class ParticleRotate extends Particle {
         this.rotate = rotate;
     }
 
-    protected List<Particle> getChildren() {
-        return List.of(particle);
-    }
-
     @Override
     protected DataParticle run(Version version) {
-        return new DataParticleRotate(particle.execute0(version), rotate);
+        return new DataParticleRotate(particle.runWithCache(version), rotate);
     }
 }

@@ -3,7 +3,6 @@ package yancey.openparticle.api.particle;
 import yancey.openparticle.api.common.data.particle.DataParticle;
 import yancey.openparticle.api.util.version.Version;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class ParticleFunction extends Particle {
@@ -14,10 +13,6 @@ public class ParticleFunction extends Particle {
     public ParticleFunction(Particle particle, Function<Particle, Particle> function) {
         this.particle = particle;
         this.function = function;
-    }
-
-    protected List<Particle> getChildren() {
-        return List.of(particle);
     }
 
     @Override

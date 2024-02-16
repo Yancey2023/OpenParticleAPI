@@ -1,8 +1,8 @@
 package yancey.openparticle.api.shape2d;
 
-import yancey.openparticle.api.particle.Particle;
 import yancey.openparticle.api.common.math.Matrix;
 import yancey.openparticle.api.common.math.Vec3;
+import yancey.openparticle.api.particle.Particle;
 
 import java.util.List;
 import java.util.Objects;
@@ -81,10 +81,10 @@ public class Line {
             if (interval != -1 && count != -1) {
                 throw new RuntimeException("直线参数冲突: 不能同时传入粒子间隔和粒子数量");
             }
-        } else if(count != -1 && interval != -1 && rotate != null){
+        } else if (count != -1 && interval != -1 && rotate != null) {
             length = interval * count;
             start = Objects.requireNonNullElse(start, Vec3.ZERO);
-        }else{
+        } else {
             throw new RuntimeException("无法确认唯一的直线");
         }
         if (interval == -1 && count == -1) {
@@ -99,7 +99,7 @@ public class Line {
             }
             Matrix matrix = Matrix.multiply(Matrix.offset(start), Matrix.rotateXYZ(rotate));
             return Shape2dUtil.line(length, count).stream()
-                    .map(distance -> particle.offsetStatic(matrix.apply(new Vec3(distance, 0, 0))))
+                    .map(distance -> particle.offset(matrix.apply(new Vec3(distance, 0, 0))))
                     .toList();
         };
     }

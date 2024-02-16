@@ -5,13 +5,15 @@ import yancey.openparticle.api.common.data.vec3.DataVec3Free;
 import yancey.openparticle.api.common.math.Matrix;
 import yancey.openparticle.api.common.math.Vec3;
 import yancey.openparticle.api.particle.Particle;
+import yancey.openparticle.api.shape3d.Cuboid;
 import yancey.openparticle.api.type.ParticleType;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class ActivityTest extends Activity {
+public class ActivityTest2 extends Activity {
 
 
     @Override
@@ -21,15 +23,25 @@ public class ActivityTest extends Activity {
 
     @Override
     protected Vec3 getPosition() {
-        return new Vec3(0, 100, 0);
+        return new Vec3(0, -30, 0);
+//        return new Vec3(0, 100, 0);
     }
 
     @Override
     protected void createParticle() {
-        butterfly(80, 0.2F);
+        staticTest();
+//        butterfly(80, 0.2F);
+    }
+
+    public void staticTest() {
+        addParticle(ParticleType.END_ROD
+                .createParticle(200)
+                .compound(Cuboid.create().shape(50).count(300000).type(Cuboid.Type.SOLID).build()));
     }
 
     public void butterfly(int age, float rotateChangeRange) {
+        AtomicReference<Float> tick = new AtomicReference<>(0F);
+        int count = 1000;
         addParticle(ParticleType.END_ROD
                 .createParticle(age)
                 //生成蝴蝶
@@ -75,10 +87,12 @@ public class ActivityTest extends Activity {
                         offsetList[i] = offset;
                         offset = offset.add(rotateMatrixList[i].apply(new Vec3(0.5F, 0, 0)));
                     }
-                    return particle.rotate(new DataVec3Free(rotateList))
+                    return particle
+                            .rotate(new DataVec3Free(rotateList))
                             .offset(new DataVec3Free(offsetList));
                 })
-                .repeat(1000)
+                .apply(particle -> particle.tick(tick.getAndUpdate(v -> v + (age - 1) / count).intValue()))
+                .repeat(count)
                 .offset(0, 10, 0)
         );
     }
