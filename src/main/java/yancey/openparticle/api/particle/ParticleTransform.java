@@ -39,7 +39,7 @@ public class ParticleTransform extends Particle {
             if (particle.isUseCache) {
                 isUseCache = true;
             }
-            if(particleTransform.dataMatrix != null){
+            if (particleTransform.dataMatrix != null) {
                 dataMatrixList.add(particleTransform.dataMatrix);
             }
             if (dataColorResult == null) {

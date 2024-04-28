@@ -3,9 +3,9 @@ package activity;
 import yancey.openparticle.api.activity.Activity;
 import yancey.openparticle.api.particle.Particle;
 import yancey.openparticle.api.run.math.Matrix;
+import yancey.openparticle.api.run.math.Vec3;
 import yancey.openparticle.api.shape3d.Cuboid;
 import yancey.openparticle.api.type.ParticleType;
-import yancey.openparticle.api.run.math.Vec3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ public class ActivityTest2 extends Activity {
 
     @Override
     protected File getFile() {
-//        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\1.par");
+        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\1.par");
 //        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\3150.par");
-        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\315000.par");
+//        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\315000.par");
 //        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\1008000.par");
 //        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\3150000.par");
 //        return new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\10080000.par");
@@ -34,12 +34,12 @@ public class ActivityTest2 extends Activity {
 
     @Override
     protected void createParticle() {
-//        addParticle(ParticleType.END_ROD.createParticle(20).offsetSpeed(Vec3.ZERO, new Vec3(0, 0.1F, 0)));
+        addParticle(ParticleType.END_ROD.createParticle(20).offsetSpeed(Vec3.ZERO, new Vec3(0, 0.1F, 0)));
 //        staticTest();
         //3150
 //        butterfly(10, 80, 0.2F);
         //315000
-        butterfly(1000, 80, 0.2F);
+//        butterfly(1000, 80, 0.2F);
         //1008000
 //        butterfly(3200, 80, 0.2F);
         //3150000

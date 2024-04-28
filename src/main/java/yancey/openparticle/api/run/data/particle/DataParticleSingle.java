@@ -14,13 +14,11 @@ public class DataParticleSingle extends DataParticle {
     public int age;
 
     public DataParticleSingle(DataIdentifier dataIdentifier, int age) {
-        super();
         this.dataIdentifier = dataIdentifier;
         this.age = age;
     }
 
     public DataParticleSingle(DataParticleManager dataParticleManager, DataInputStream dataInputStream) throws IOException {
-        super(dataInputStream);
         this.dataIdentifier = dataParticleManager.dataIdentifierList.get(dataInputStream.readInt());
         this.age = dataInputStream.readInt();
     }

@@ -3,8 +3,6 @@ package yancey.openparticle.api.run.data.identifier;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class DataIdentifier {
@@ -34,22 +32,6 @@ public class DataIdentifier {
             dataOutputStream.writeUTF(namespace);
         }
         dataOutputStream.writeUTF(value);
-    }
-
-    public static void writeIdentifierList(List<DataIdentifier> identifierList, DataOutputStream dataOutputStream) throws IOException {
-        dataOutputStream.writeInt(identifierList.size());
-        for (DataIdentifier dataIdentifier : identifierList) {
-            dataIdentifier.writeToFile(dataOutputStream);
-        }
-    }
-
-    public static List<DataIdentifier> readIdentifierList(DataInputStream dataInputStream) throws IOException {
-        List<DataIdentifier> result = new ArrayList<>();
-        int size = dataInputStream.readInt();
-        for (int i = 0; i < size; i++) {
-            result.add(new DataIdentifier(dataInputStream));
-        }
-        return result;
     }
 
     @Override

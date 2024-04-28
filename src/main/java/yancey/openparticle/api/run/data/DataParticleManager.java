@@ -46,17 +46,24 @@ public class DataParticleManager {
     }
 
     public DataParticleManager(DataInputStream dataInputStream) throws IOException {
-        dataIdentifierList = DataIdentifier.readIdentifierList(dataInputStream);
-        int size1 = dataInputStream.readInt();
-        dataParticleList = new ArrayList<>(size1);
-        for (int i = 0; i < size1; i++) {
+        int size = dataInputStream.readInt();
+        dataIdentifierList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            dataIdentifierList.add(new DataIdentifier(dataInputStream));
+        }
+        size = dataInputStream.readInt();
+        dataParticleList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
             dataParticleList.add(DataParticle.readFromFile(this, dataInputStream));
         }
         root = getDataParticle(dataInputStream.readInt());
     }
 
     public void writeToFile(DataOutputStream dataOutputStream) throws IOException {
-        DataIdentifier.writeIdentifierList(dataIdentifierList, dataOutputStream);
+        dataOutputStream.writeInt(dataIdentifierList.size());
+        for (DataIdentifier dataIdentifier : dataIdentifierList) {
+            dataIdentifier.writeToFile(dataOutputStream);
+        }
         dataOutputStream.writeInt(dataParticleList.size());
         for (DataParticle dataParticle : dataParticleList) {
             dataParticle.writeToFile(this, dataOutputStream);

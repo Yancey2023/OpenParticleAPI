@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Pair<A, B> {
 
-    public A first;
-    public B second;
+    public final A first;
+    public final B second;
 
     public Pair(A first, B second) {
         this.first = first;

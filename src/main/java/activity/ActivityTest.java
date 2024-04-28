@@ -1,8 +1,8 @@
 package activity;
 
 import yancey.openparticle.api.activity.Activity;
-import yancey.openparticle.api.run.math.Vec3;
 import yancey.openparticle.api.particle.Particle;
+import yancey.openparticle.api.run.math.Vec3;
 import yancey.openparticle.api.type.ParticleType;
 
 import java.io.File;
@@ -32,30 +32,30 @@ public class ActivityTest extends Activity {
     public void butterfly(int age, float rotateChangeRange) {
         AtomicInteger j = new AtomicInteger();
         addParticle(ParticleType.END_ROD
-                .createParticle(age)
-                //生成蝴蝶
-                .compound(particle -> {
-                    List<Particle> particleList = new ArrayList<>();
-                    double r = 1;
-                    for (double theta = 0; theta < 2 * Math.PI; theta += 0.02) {
-                        float r0 = (float) (2 * Math.abs(Math.sin(2 * theta)) + Math.abs(Math.sin(4 * theta)));
-                        float x = (float) (r * r0 * Math.sin(theta));
-                        float y = (float) (r * r0 * Math.cos(theta));
-                        Vec3[] positions = new Vec3[age];
-                        for (int i = 0; i < age; i++) {
+                        .createParticle(age)
+                        //生成蝴蝶
+                        .compound(particle -> {
+                            List<Particle> particleList = new ArrayList<>();
+                            double r = 1;
+                            for (double theta = 0; theta < 2 * Math.PI; theta += 0.02) {
+                                float r0 = (float) (2 * Math.abs(Math.sin(2 * theta)) + Math.abs(Math.sin(4 * theta)));
+                                float x = (float) (r * r0 * Math.sin(theta));
+                                float y = (float) (r * r0 * Math.cos(theta));
+                                Vec3[] positions = new Vec3[age];
+                                for (int i = 0; i < age; i++) {
 //                            positions[i] = new Vec3(x, (float) (Math.abs(y) * Math.sin(0.5 * i)), y);
-                            positions[i] = new Vec3(x, (float) (0.1 * i), y);
+                                    positions[i] = new Vec3(x, (float) (0.1 * i), y);
 //                            positions[i] = new Vec3(x, 0, y);
-                        }
-                        particleList.add(particle
-                                .offset(x, 0, y)
-                                .offset(positions)
-                        );
-                    }
-                    return particleList;
-                })
-                //倾斜45度
-                .rotate(0, 0, (float) Math.PI / 4)
+                                }
+                                particleList.add(particle
+                                        .offset(x, 0, y)
+                                        .offset(positions)
+                                );
+                            }
+                            return particleList;
+                        })
+                        //倾斜45度
+                        .rotate(0, 0, (float) Math.PI / 4)
 //                .apply(particle -> {
 //                    //获得时间
 //                    //随机生成每个时刻旋转的角度，获得旋转矩阵
@@ -81,9 +81,9 @@ public class ActivityTest extends Activity {
 //                    return particle.rotateFree(rotateList)
 //                            .offset(offsetList);
 //                })
-                .apply(particle -> particle.offset(getRandomVec3(100)).tick((int) (0.1 * j.getAndIncrement())))
-                .repeat(1)
-                .offset(0, 10, 0)
+                        .apply(particle -> particle.offset(getRandomVec3(100)).tick((int) (0.1 * j.getAndIncrement())))
+                        .repeat(1)
+                        .offset(0, 10, 0)
         );
     }
 }

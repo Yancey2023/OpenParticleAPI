@@ -16,14 +16,6 @@ public abstract class DataParticle {
     public static final byte TRANSFORM = 2;
     public int id = -1;
 
-    public DataParticle() {
-
-    }
-
-    public DataParticle(DataInputStream dataInputStream) throws IOException {
-        this.id = dataInputStream.readInt();
-    }
-
     public static DataParticle readFromFile(DataParticleManager dataParticleManager, DataInputStream dataInputStream) throws IOException {
         byte type = dataInputStream.readByte();
         return switch (type) {
@@ -38,7 +30,6 @@ public abstract class DataParticle {
 
     public void writeToFile(DataParticleManager dataParticleManager, DataOutputStream dataOutputStream) throws IOException {
         dataOutputStream.writeByte(getType());
-        dataOutputStream.writeInt(id);
     }
 
     public abstract void collect(List<DataParticle> dataParticleList);

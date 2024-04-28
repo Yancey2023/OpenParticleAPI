@@ -9,8 +9,8 @@ import java.io.*;
 
 public class OpenParticleAPI {
 
-    public OpenParticleProject.Bridge bridge;
-    public Logger logger;
+    public final OpenParticleProject.Bridge bridge;
+    public final Logger logger;
 
     public OpenParticleAPI() {
         this.bridge = (namespace, value) -> new float[]{0, 0, 0, 0};

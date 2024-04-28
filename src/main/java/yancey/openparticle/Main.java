@@ -1,6 +1,5 @@
 package yancey.openparticle;
 
-import activity.ActivityTest;
 import activity.ActivityTest2;
 import yancey.openparticle.api.activity.ActivityManager;
 import yancey.openparticle.api.common.nativecore.OpenParticleProject;
@@ -21,8 +20,9 @@ public class Main {
     public static void main(String[] args) {
         //declare a open particle API
         OpenParticleAPI openParticleAPI = new OpenParticleAPI();
+
         //add activity you want to output
-        ActivityManager.add(ActivityTest.class);
+//        ActivityManager.add(ActivityTest.class);
         ActivityManager.add(ActivityTest2.class);
         //output activity as particle file
         ActivityManager.output(openParticleAPI);
@@ -30,10 +30,11 @@ public class Main {
 //        ActivityManager.outputAndRun(openParticleAPI, false);
 
         // if you want to run particle file, you can use runInJava or runInNative to run it
-        String nativeLibPath = "D:\\CLion\\project\\OpenParticle\\cmake-build-release\\libOpenParticle.dll";
-        File file = new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\315000.par");
-        runInJava(openParticleAPI, file);
-        runInNative(nativeLibPath, openParticleAPI, file);
+//        String nativeLibPath = "D:\\CLion\\project\\OpenParticle\\cmake-build-release\\libOpenParticle.dll";
+//        File file = new File("D:\\IDEA\\project\\others\\OpenParticleAPI\\run\\315000.par");
+//        File file = new File("D:\\PyCharm\\project\\OpenParticleAPI-py\\particles.par");
+//        runInJava(openParticleAPI, file);
+//        runInNative(nativeLibPath, openParticleAPI, file);
 
         // exit
         System.exit(0);

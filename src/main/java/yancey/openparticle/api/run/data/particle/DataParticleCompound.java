@@ -15,7 +15,6 @@ public class DataParticleCompound extends DataParticle {
     public DataParticle[] children;
 
     public DataParticleCompound(DataParticle[] children) {
-        super();
         this.children = children;
         if (children.length < 1) {
             throw new IllegalArgumentException("children must contain at least one particle");
@@ -23,7 +22,6 @@ public class DataParticleCompound extends DataParticle {
     }
 
     public DataParticleCompound(DataParticleManager dataParticleManager, DataInputStream dataInputStream) throws IOException {
-        super(dataInputStream);
         this.children = new DataParticle[dataInputStream.readInt()];
         for (int i = 0; i < this.children.length; i++) {
             this.children[i] = dataParticleManager.getDataParticle(dataInputStream.readInt());

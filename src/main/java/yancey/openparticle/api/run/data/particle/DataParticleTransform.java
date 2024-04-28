@@ -35,7 +35,6 @@ public class DataParticleTransform extends DataParticle {
     }
 
     public DataParticleTransform(DataParticleManager dataParticleManager, DataInputStream dataInputStream) throws IOException {
-        super(dataInputStream);
         this.child = dataParticleManager.getDataParticle(dataInputStream.readInt());
         this.dataMatrix = DataMatrix.readFromFile(dataInputStream);
         this.dataColor = DataColor.readFromFile(dataInputStream);
