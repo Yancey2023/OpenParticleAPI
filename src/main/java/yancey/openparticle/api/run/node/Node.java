@@ -53,10 +53,10 @@ public class Node {
     }
 
     public void buildCache(int tick, NodeCache parentCache, NodeCache[] caches) {
+        if (tick < tickStart || tick >= tickEnd) {
+            return;
+        }
         if (isTransformNode) {
-            if (tick < tickStart || tick >= tickEnd) {
-                return;
-            }
             NodeCache nodeCache = new NodeCache(
                     Matrix.multiply(parentCache.cachePosition, dataParticle.getTransform(tick - tickStart)),
                     parentCache.cacheColor == 0 ? dataParticle.getColor(tick - tickStart) : parentCache.cacheColor

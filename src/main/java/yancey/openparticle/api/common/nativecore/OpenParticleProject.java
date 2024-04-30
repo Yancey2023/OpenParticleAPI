@@ -31,7 +31,7 @@ public class OpenParticleProject implements Closeable {
     }
 
     public void tick(int tick) {
-        if (tick < 0 || tick > tickEnd) {
+        if (tick < 0) {
             throw new RuntimeException("Tick out of range: " + tick);
         }
         lock.lock();
@@ -99,7 +99,7 @@ public class OpenParticleProject implements Closeable {
     public void close() {
         lock.lock();
         try {
-            if (particleDataPointer != 0) {
+            if (particleDataPointer == 0) {
                 return;
             }
             release(particleDataPointer);

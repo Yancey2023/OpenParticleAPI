@@ -20,13 +20,15 @@ public class ActivityTest extends Activity {
 
     @Override
     protected Vec3 getPosition() {
-        return new Vec3(0, 100, 0);
+        return new Vec3(0, -55, 0);
 //        return new Vec3(0, 0, 0);
     }
 
     @Override
     protected void createParticle() {
-        butterfly(80, 0.2F);
+        addParticle(ParticleType.END_ROD.createParticle(20));
+        addParticle(ParticleType.END_ROD.createParticle(20).offset(0, 1, 0).tick(20));
+//        butterfly(80, 0.2F);
     }
 
     public void butterfly(int age, float rotateChangeRange) {

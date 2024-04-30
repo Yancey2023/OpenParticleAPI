@@ -82,7 +82,6 @@ public class ActivityTest2 extends Activity {
                 //倾斜45度
                 .rotate(0, 0, (float) Math.PI / 4)
                 .apply(particle -> {
-                    //获得时间
                     //随机生成每个时刻旋转的角度，获得旋转矩阵
                     Vec3 rotate = getRandomVec3((float) Math.PI);
                     Vec3 rotateChange = Vec3.ZERO;
