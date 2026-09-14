@@ -1,6 +1,3 @@
-# OpenParticleAPI
+# OpenParticleAPI is hosted on https://github.com/Yancey2023/OpenParticle
 
-Language: Java
-
-create particle file which can be run by OpenParticle mod.
-
+This repo is archived and will no longer be updated.
